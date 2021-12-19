@@ -41,16 +41,12 @@ bc = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["evm"]["byt
 abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 
 
-# w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER")))
 
-w3 = Web3(
-    Web3.HTTPProvider("https://rinkeby.infura.io/v3/3158e535f5e942b6a91ef815f31facc8")
-)
 
 # chainId = 1337 #ganache
 chainId = 4  # infura
-# myAddress = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1"
-myAddress = "0xf4b6066299a7D0Db55976d6EA81b6eD613D72650"  # metamask account1
+myAddress = os.getenv("MY_ADDRESS")
 
 private_key = os.getenv("PRIVATE_KEY")
 print(private_key)
@@ -61,10 +57,10 @@ nonce = w3.eth.getTransactionCount(myAddress)
 print(nonce)
 
 transaction = SimpleStorage.constructor().buildTransaction(
-    {"chainId": chainId, "from": myAddress, "nonce": nonce}
+    {"chainId": chainId, "from": myAddress, "nonce": nonce + 1}
 )
 
-# print(transaction)
+print(transaction)
 
 signedTx = w3.eth.account.sign_transaction(transaction, private_key)
 
